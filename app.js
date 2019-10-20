@@ -1,8 +1,17 @@
 // Listen for submit
-document.getElementById('loanForm').addEventListener('submit', calculateResults);
+document.getElementById('loanForm').addEventListener('submit', function(e) {
+  // Hide results
+  document.querySelector('.results').classList.add('is-hidden');
+  // Show loader
+  document.querySelector('.loading').classList.remove('is-hidden');
+
+  setTimeout(calculateResults, 2000);
+
+  e.preventDefault();
+});
 
 // Calculate results
-function calculateResults(e) {
+function calculateResults() {
   console.log('Calculating...');
   // UI vars
   const loanAmount = document.getElementById('loanAmount');
@@ -23,15 +32,22 @@ function calculateResults(e) {
     monthlyPayment.value = monthly.toFixed(2);
     totalPayment.value = (monthly * calculatedPayments).toFixed(2);
     totalInterest.value = ((monthly * calculatedPayments) - principal).toFixed(2);
+    // Show results
+    document.querySelector('.results').classList.remove('is-hidden');
+    // Hide loader
+    document.querySelector('.loading').classList.add('is-hidden');
   } else {
+    // Show error
     showError('Please check your numbers');
   }
-  
-  e.preventDefault();
 }
 
 // Show error
 function showError(error) {
+  // Hide results
+  document.querySelector('.results').classList.add('is-hidden');
+  // Hide loader
+  document.querySelector('.loading').classList.add('is-hidden');
   // Create div
   const errorDiv = document.createElement('div');
   // Add class
